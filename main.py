@@ -1,22 +1,31 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from utils import describe_element_with_groq, get_clicked_element_position, get_image_from_payload, highlight_clicked_element_on_image, generate_journey_summary
+from utils import get_element_description, get_clicked_element_position, get_image_from_payload, highlight_clicked_element_on_image, generate_journey_summary
 
 load_dotenv()
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/step-description")
 async def step_description(request: Request):
     try:
         json_data = await request.json()
-        
+        clicked_element_id = json_data['elementIds'][-1]
         clickedElementDataPosition = get_clicked_element_position(json_data)
         image = get_image_from_payload(json_data)
         image = highlight_clicked_element_on_image(image, json_data, clickedElementDataPosition)
-        description = await describe_element_with_groq(image)
+        description = await get_element_description(image)
         
-        return {"result": True, "description": description}
+        return {"result": True, "description": description, "clicked_element_id": clicked_element_id}
     except Exception as e:
         print(f"Error: {e}")
         return {"result": False, "error": str(e)}
@@ -31,7 +40,7 @@ async def journey_summary(request: Request):
             return {"result": False, "error": "No steps provided"}
         
         summary = await generate_journey_summary(steps)
-        
+        print(summary)
         return {"result": True, "name": summary.get("name"), "description": summary.get("description")}
     except Exception as e:
         print(f"Error: {e}")

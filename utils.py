@@ -1,9 +1,14 @@
 import base64
 import os
 import json
-import httpx
+import boto3
 from io import BytesIO
 from PIL import Image, ImageDraw
+
+bedrock_client = boto3.client(
+    "bedrock-runtime",
+    region_name=os.getenv("AWS_REGION", "eu-central-1"),
+)
 
 def get_clicked_element_position(json_data: dict) -> dict:
     clicked_element = json_data['elementIds'][-1]
@@ -61,7 +66,7 @@ def resize_image_for_api(image: Image.Image, max_size: int = 1024) -> Image.Imag
     print(f"Resized image from {width}x{height} to {new_width}x{new_height}")
     return resized
 
-async def describe_element_with_groq(image: Image.Image) -> str:
+async def get_element_description(image: Image.Image) -> str:
     resized_image = resize_image_for_api(image, max_size=1024)
     
     buffer = BytesIO()
@@ -70,69 +75,62 @@ async def describe_element_with_groq(image: Image.Image) -> str:
     
     print(f"Image size for API: {len(image_base64) // 1024} KB")
     
-    api_key = os.getenv("GROQ_API_KEY")
-    url = "https://api.groq.com/openai/v1/chat/completions"
-    
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-    
     payload = {
-        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 300,
         "messages": [{
             "role": "user",
             "content": [
-                {"type": "text", "text": "Describe the UI element highlighted with a red rectangle in this screenshot. it should start with \"Click here to\" and then a one liner what will happen "},
-                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_base64}"}}
+                {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_base64}},
+                {"type": "text", "text": "Describe the UI element highlighted with a red rectangle in this screenshot. Make no reference to element itself only reply with description which starts with \"Click here to\" and then a one liner what will happen."}
             ]
-        }],
-        "max_tokens": 300
+        }]
     }
     
-    async with httpx.AsyncClient(verify=False) as client:
-        response = await client.post(url, headers=headers, json=payload, timeout=60.0)
-        result = response.json()
-        print(result)
+    response = bedrock_client.invoke_model(
+        modelId="anthropic.claude-3-sonnet-20240229-v1:0",
+        contentType="application/json",
+        accept="application/json",
+        body=json.dumps(payload)
+    )
     
-    if 'error' in result:
-        print(f"API Error: {result['error']}")
-        return f"Error: {result['error'].get('message', 'Unknown error')}"
+    result = json.loads(response['body'].read())
+    print(result)
     
-    return result['choices'][0]['message']['content']
+    return result['content'][0]['text']
 
 async def generate_journey_summary(steps: list) -> dict:
-    api_key = os.getenv("GROQ_API_KEY")
-    url = "https://api.groq.com/openai/v1/chat/completions"
-    
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-    
     steps_text = "\n".join([f"Step {i+1}: {step}" for i, step in enumerate(steps)])
     
     payload = {
-        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 200,
         "messages": [{
             "role": "user",
-            "content": f"Given these steps of a user journey:\n{steps_text}\n\n"
-                       f"Provide a JSON response with:\n1. \"name\": A short name (2-4 words)\n2. \"description\": A one-liner\n\nRespond ONLY with valid JSON."
-        }],
-        "max_tokens": 200
+            "content": f"Given these steps of a user journey:\n{steps_text}\n\nProvide a JSON response with:\n1. \"name\": A short name (2-4 words)\n2. \"description\": A one-liner\n\nRespond ONLY with valid JSON, no markdown."
+        }]
     }
     
-    async with httpx.AsyncClient(verify=False) as client:
-        response = await client.post(url, headers=headers, json=payload, timeout=60.0)
-        result = response.json()
-        print(result)
+    response = bedrock_client.invoke_model(
+        modelId="anthropic.claude-3-sonnet-20240229-v1:0",
+        contentType="application/json",
+        accept="application/json",
+        body=json.dumps(payload)
+    )
     
-    if 'error' in result:
-        print(f"API Error: {result['error']}")
-        return {"name": "Unknown Journey", "description": f"Error: {result['error'].get('message', 'Unknown error')}"}
+    result = json.loads(response['body'].read())
     
     try:
-        content = result['choices'][0]['message']['content']
+        content = result['content'][0]['text']
+        content = content.strip()
+        if content.startswith('```json'):
+            content = content[7:]
+        if content.startswith('```'):
+            content = content[3:]
+        if content.endswith('```'):
+            content = content[:-3]
+        content = content.strip()
         return json.loads(content)
-    except:
+    except Exception as e:
+        print(f"JSON parse error: {e}")
         return {"name": "User Journey", "description": content}
