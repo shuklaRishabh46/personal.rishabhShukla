@@ -14,7 +14,6 @@ async def step_description(request: Request):
         clickedElementDataPosition = get_clicked_element_position(json_data)
         image = get_image_from_payload(json_data)
         image = highlight_clicked_element_on_image(image, json_data, clickedElementDataPosition)
-        image.save("output_image.png")
         description = await describe_element_with_groq(image)
         
         return {"result": True, "description": description}
