@@ -10,6 +10,31 @@ bedrock_client = boto3.client(
     region_name=os.getenv("AWS_REGION", "eu-central-1"),
 )
 
+DB_FILE = "db.json"
+
+def load_db() -> dict:
+    try:
+        with open(DB_FILE, 'r') as f:
+            return json.load(f)
+    except:
+        return {"steps": {}}
+
+def save_db(data: dict):
+    with open(DB_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
+
+def get_step_by_element_id(element_id: str) -> dict:
+    db = load_db()
+    return db["steps"].get(element_id)
+
+def save_step_description(element_id: str, description: str):
+    db = load_db()
+    db["steps"][element_id] = {"element_id": element_id, "description": description}
+    save_db(db)
+
+def get_clicked_element_id(json_data: dict) -> str:
+    return json_data['elementIds'][-1]
+
 def get_clicked_element_position(json_data: dict) -> dict:
     clicked_element = json_data['elementIds'][-1]
     return json_data['attributes'][clicked_element]['metadata']['domRect']
