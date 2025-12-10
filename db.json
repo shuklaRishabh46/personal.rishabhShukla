@@ -1,8 +1,29 @@
 {
   "steps": {
-    "id,6ec1a1d.ix,1.tg,c96c6d5.cl,7fc0999.1303c06,3b9c358": {
-      "element_id": "id,6ec1a1d.ix,1.tg,c96c6d5.cl,7fc0999.1303c06,3b9c358",
-      "description": "Click here to enter your email address and password to log into the system or application."
+    "ix,0.tg,c3e2d78.it,7d9eb7a.ac,0d59c7f.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,b2aae88": {
+      "element_id": "ix,0.tg,c3e2d78.it,7d9eb7a.ac,0d59c7f.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,b2aae88",
+      "description": "Click here to close the \"Create\" dialog window. This will dismiss the window and return the user to the previous screen.",
+      "counter": 2
+    },
+    "ix,0.tg,c3e2d78.it,4759498.ac,9bf6ac4.c671eb8,4759498.1303c06,c3e2d78.ef68f68,e036453": {
+      "element_id": "ix,0.tg,c3e2d78.it,4759498.ac,9bf6ac4.c671eb8,4759498.1303c06,c3e2d78.ef68f68,e036453",
+      "description": "Click here to create a new item in Nextthink. This will allow you to add a new space, app, or other element to the platform.",
+      "counter": 1
+    },
+    "ix,0.tg,ca97811.ac,7556e7f.66ba212,59c0f8e.fea45fa,760499a.34a0400,db6d3a1": {
+      "element_id": "ix,0.tg,ca97811.ac,7556e7f.66ba212,59c0f8e.fea45fa,760499a.34a0400,db6d3a1",
+      "description": "Click here to navigate to the Nextthink homepage. This will take you to the main website for Nextthink, a company that specializes in IT management and service offerings.",
+      "counter": 2
+    },
+    "ix,0.tg,c3e2d78.it,4559742.ac,9757ae8.c671eb8,4559742.1303c06,c3e2d78": {
+      "element_id": "ix,0.tg,c3e2d78.it,4559742.ac,9757ae8.c671eb8,4559742.1303c06,c3e2d78",
+      "description": "Click here to \"Ask Rovo\". Doing so will allow you to submit a request or ask a question to the Rovo support team.",
+      "counter": 1
+    },
+    "ix,3.tg,c3e2d78.it,7d9eb7a.ac,8c9bee7.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,1935a78": {
+      "element_id": "ix,3.tg,c3e2d78.it,7d9eb7a.ac,8c9bee7.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,1935a78",
+      "description": "Click here to close the chat window. This action will dismiss the chat window and return the user to the main application interface.",
+      "counter": 1
     }
   }
 }

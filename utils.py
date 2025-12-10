@@ -4,6 +4,9 @@ import json
 import boto3
 from io import BytesIO
 from PIL import Image, ImageDraw
+from dotenv import load_dotenv
+
+load_dotenv()
 
 bedrock_client = boto3.client(
     "bedrock-runtime",
@@ -25,11 +28,16 @@ def save_db(data: dict):
 
 def get_step_by_element_id(element_id: str) -> dict:
     db = load_db()
-    return db["steps"].get(element_id)
+    step = db["steps"].get(element_id)
+    if step:
+        step["counter"] = step.get("counter", 0) + 1
+        db["steps"][element_id] = step
+        save_db(db)
+    return step
 
-def save_step_description(element_id: str, description: str):
+def save_step_description(element_id: str, description: str, counter: int):
     db = load_db()
-    db["steps"][element_id] = {"element_id": element_id, "description": description}
+    db["steps"][element_id] = {"element_id": element_id, "description": description, "counter": counter}
     save_db(db)
 
 def get_clicked_element_id(json_data: dict) -> str:
@@ -49,14 +57,20 @@ def get_image_from_payload(json_data: dict) -> Image.Image:
     return Image.open(BytesIO(image_bytes))
 
 def highlight_clicked_element_on_image(image: Image.Image, json_data: dict, element_position: dict) -> Image.Image:
-    root_element = json_data['elementIds'][0]
-    root_rect = json_data['attributes'][root_element]['metadata']['domRect']
+    scale_x = 1.0
+    scale_y = 1.0
     
-    scale_x = image.width / root_rect['width']
-    scale_y = image.height / root_rect['height']
+    # Find first element with non-zero dimensions to calculate scale (handles modals)
+    for element_id in json_data['elementIds']:
+        rect = json_data['attributes'][element_id]['metadata']['domRect']
+        if rect['width'] > 0 and rect['height'] > 0:
+            scale_x = image.width / rect['width']
+            scale_y = image.height / rect['height']
+            print(f"Using element {element_id} for scale calculation")
+            print(f"Element rect: {rect['width']}x{rect['height']}")
+            break
     
     print(f"Image size: {image.width}x{image.height}")
-    print(f"Root rect: {root_rect['width']}x{root_rect['height']}")
     print(f"Scale factor: {scale_x}, {scale_y}")
     
     draw = ImageDraw.Draw(image)
@@ -113,7 +127,7 @@ async def get_element_description(image: Image.Image) -> str:
     }
     
     response = bedrock_client.invoke_model(
-        modelId="anthropic.claude-3-sonnet-20240229-v1:0",
+        modelId="anthropic.claude-3-haiku-20240307-v1:0",
         contentType="application/json",
         accept="application/json",
         body=json.dumps(payload)
@@ -137,7 +151,7 @@ async def generate_journey_summary(steps: list) -> dict:
     }
     
     response = bedrock_client.invoke_model(
-        modelId="anthropic.claude-3-sonnet-20240229-v1:0",
+        modelId="anthropic.claude-3-haiku-20240307-v1:0",
         contentType="application/json",
         accept="application/json",
         body=json.dumps(payload)

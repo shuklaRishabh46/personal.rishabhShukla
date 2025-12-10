@@ -29,12 +29,17 @@ async def step_description(request: Request):
     try:
         json_data = await request.json()
         clicked_element_id = get_clicked_element_id(json_data)
+        
+        existing_step = get_step_by_element_id(clicked_element_id)
+        if existing_step:
+            return {"result": True, "description": existing_step["description"], "element_id": clicked_element_id, "cached": True}
+        
         clickedElementDataPosition = get_clicked_element_position(json_data)
         image = get_image_from_payload(json_data)
         image = highlight_clicked_element_on_image(image, json_data, clickedElementDataPosition)
         description = await get_element_description(image)
         
-        save_step_description(clicked_element_id, description)
+        save_step_description(clicked_element_id, description, 1)
         
         return {"result": True, "description": description, "element_id": clicked_element_id}
     except Exception as e:
