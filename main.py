@@ -2,12 +2,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from utils import (
+    generate_graph_summary,
     get_element_description, 
     get_clicked_element_position, 
     get_image_from_payload, 
     highlight_clicked_element_on_image, 
     generate_journey_summary,
     get_step_by_element_id,
+    read_step_by_element_id,
     save_step_description,
     get_clicked_element_id
 )
@@ -32,16 +34,40 @@ async def step_description(request: Request):
         
         existing_step = get_step_by_element_id(clicked_element_id)
         if existing_step:
-            return {"result": True, "description": existing_step["description"], "element_id": clicked_element_id, "cached": True}
+            return {
+                "result": True, 
+                "description": existing_step["description"], 
+                "name": existing_step["name"], 
+                "element_id": clicked_element_id, 
+                "counter": existing_step["counter"], 
+                "cached": True
+            }
         
         clickedElementDataPosition = get_clicked_element_position(json_data)
         image = get_image_from_payload(json_data)
         image = highlight_clicked_element_on_image(image, json_data, clickedElementDataPosition)
-        description = await get_element_description(image)
+        image.save("highlighted_image.png")
+        description_data = await get_element_description(image)
+        description = description_data["description"]
+        name = description_data["name"]
         
-        save_step_description(clicked_element_id, description, 1)
+        save_step_description(clicked_element_id, description, name, 1)
         
-        return {"result": True, "description": description, "element_id": clicked_element_id}
+        return {"result": True, "description": description, "element_id": clicked_element_id, "counter": 1}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {"result": False, "error": str(e)}
+
+@app.post("/getStepCounter")
+async def getStepCounter(request: Request):
+    try:
+        json_data = await request.json()
+        clicked_element_id = get_clicked_element_id(json_data)
+        step = read_step_by_element_id(clicked_element_id)
+        if step:
+            return {"result": True, "counter": step["counter"], "description": step["description"], "name": step["name"]}
+        else:
+            return {"result": False, "error": "Step not found", "counter": 0, "description": "", "name": ""}
     except Exception as e:
         print(f"Error: {e}")
         return {"result": False, "error": str(e)}
@@ -71,6 +97,16 @@ async def journey_summary(request: Request):
         summary = await generate_journey_summary(steps)
         print(summary)
         return {"result": True, "name": summary.get("name"), "description": summary.get("description")}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {"result": False, "error": str(e)}
+
+@app.post("/getGraphSummary")
+async def getGraphSummary(request: Request):
+    try:
+        json_data = await request.json()
+        graph_data = await generate_graph_summary(json_data)
+        return {"result": True, "graph_data": graph_data}
     except Exception as e:
         print(f"Error: {e}")
         return {"result": False, "error": str(e)}

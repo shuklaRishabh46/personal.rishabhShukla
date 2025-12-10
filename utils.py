@@ -35,9 +35,14 @@ def get_step_by_element_id(element_id: str) -> dict:
         save_db(db)
     return step
 
-def save_step_description(element_id: str, description: str, counter: int):
+def read_step_by_element_id(element_id: str) -> dict:
     db = load_db()
-    db["steps"][element_id] = {"element_id": element_id, "description": description, "counter": counter}
+    step = db["steps"].get(element_id)
+    return step
+
+def save_step_description(element_id: str, description: str, name: str, counter: int):
+    db = load_db()
+    db["steps"][element_id] = {"element_id": element_id, "description": description, "name": name, "counter": counter}
     save_db(db)
 
 def get_clicked_element_id(json_data: dict) -> str:
@@ -121,7 +126,7 @@ async def get_element_description(image: Image.Image) -> str:
             "role": "user",
             "content": [
                 {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_base64}},
-                {"type": "text", "text": "Describe the UI element highlighted with a red rectangle in this screenshot. Make no reference to element itself only reply with description which starts with \"Click here to\" and then a one liner what will happen."}
+                {"type": "text", "text": "Describe the UI element highlighted with a red rectangle in this screenshot. Make no reference to element itself only reply with description which starts with \"Click here to\" and then a one liner what will happen. also send me a name of this step which should be max 2 words format should be json string like this: {\"name\": \"Step Name\", description: \"Step Description\"}"}
             ]
         }]
     }
@@ -134,9 +139,12 @@ async def get_element_description(image: Image.Image) -> str:
     )
     
     result = json.loads(response['body'].read())
-    print(result)
-    
-    return result['content'][0]['text']
+    json_result = json.loads(result['content'][0]['text'])
+    print(f"JSON Result: {json_result}")
+    name = json_result['name']
+    description = json_result['description']
+    print(f"Name: {name}, Description: {description}")
+    return {"name": name, "description": description}
 
 async def generate_journey_summary(steps: list) -> dict:
     steps_text = "\n".join([f"Step {i+1}: {step}" for i, step in enumerate(steps)])
@@ -173,3 +181,19 @@ async def generate_journey_summary(steps: list) -> dict:
     except Exception as e:
         print(f"JSON parse error: {e}")
         return {"name": "User Journey", "description": content}
+
+async def generate_graph_summary(json_data: dict) -> dict:
+
+    graph_data = [
+        {"from": "Create Button", "to": "Create Issue", "flow": 9},
+        {"from": "Create Issue", "to": "Select Bug", "flow": 7},
+        {"from": "Select Bug", "to": "Select Design", "flow": 4},
+        {"from": "Select Bug", "to": "Task", "flow": 3},
+        {"from": "Select Design", "to": "Create Issue", "flow": 2},
+        {"from": "Create Button", "to": "Close Window", "flow": 2},
+        {"from": "Recent Spaces", "to": "View all", "flow": 1},
+        {"from": "View all", "to": "Create Item", "flow": 1},
+        {"from": "Create Item", "to": "Learn more", "flow": 1},
+        {"from": "Starred Items", "to": "Access Apps", "flow": 1},
+    ] 
+    return graph_data

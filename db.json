@@ -2,27 +2,92 @@
   "steps": {
     "ix,0.tg,c3e2d78.it,7d9eb7a.ac,0d59c7f.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,b2aae88": {
       "element_id": "ix,0.tg,c3e2d78.it,7d9eb7a.ac,0d59c7f.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,b2aae88",
-      "description": "Click here to close the \"Create\" dialog window. This will dismiss the window and return the user to the previous screen.",
+      "description": "Click here to close the current window and cancel the creation of a new item.",
+      "name": "Close Window",
+      "counter": 7
+    },
+    "ix,0.tg,c3e2d78.it,690dbe9.ac,012a5c2.c671eb8,690dbe9.65f93da,8bdc38d.98594f8,b5bea41.3e9cf9b,fcbcf16.1303c06,c3e2d78": {
+      "element_id": "ix,0.tg,c3e2d78.it,690dbe9.ac,012a5c2.c671eb8,690dbe9.65f93da,8bdc38d.98594f8,b5bea41.3e9cf9b,fcbcf16.1303c06,c3e2d78",
+      "description": "Click here to view your most recently accessed spaces.",
+      "name": "Recent spaces",
+      "counter": 2
+    },
+    "ix,0.tg,cd35a24.st,ccf7789.it,bc1bb35.ac,f01fab7.c671eb8,bc1bb35": {
+      "element_id": "ix,0.tg,cd35a24.st,ccf7789.it,bc1bb35.ac,f01fab7.c671eb8,bc1bb35",
+      "description": "Click here to view all the spaces associated with your account.",
+      "name": "View all",
+      "counter": 2
+    },
+    "ix,2.tg,c3e2d78.it,4759498.cl,aeb0e12.c671eb8,4759498.07397d6,5eee9ad.ef68f68,29885c4.f9a0fe0,5feceb6.1303c06,75490bd": {
+      "element_id": "ix,2.tg,c3e2d78.it,4759498.cl,aeb0e12.c671eb8,4759498.07397d6,5eee9ad.ef68f68,29885c4.f9a0fe0,5feceb6.1303c06,75490bd",
+      "description": "Click here to create a new issue or bug within the application.",
+      "name": "Create Issue",
       "counter": 2
     },
     "ix,0.tg,c3e2d78.it,4759498.ac,9bf6ac4.c671eb8,4759498.1303c06,c3e2d78.ef68f68,e036453": {
       "element_id": "ix,0.tg,c3e2d78.it,4759498.ac,9bf6ac4.c671eb8,4759498.1303c06,c3e2d78.ef68f68,e036453",
-      "description": "Click here to create a new item in Nextthink. This will allow you to add a new space, app, or other element to the platform.",
+      "description": "Click here to create a new item such as a project, issue, board, or other work item in the application.",
+      "name": "Create Item",
+      "counter": 5
+    },
+    "ix,0.tg,cd35a24.it,854edbd.ac,e772b54.c671eb8,854edbd.4b168d8,bfac314.ef68f68,4f56ebd": {
+      "element_id": "ix,0.tg,cd35a24.it,854edbd.ac,e772b54.c671eb8,854edbd.4b168d8,bfac314.ef68f68,4f56ebd",
+      "description": "Click here to learn about work types related to this issue.",
+      "name": "Learn more",
       "counter": 1
     },
-    "ix,0.tg,ca97811.ac,7556e7f.66ba212,59c0f8e.fea45fa,760499a.34a0400,db6d3a1": {
-      "element_id": "ix,0.tg,ca97811.ac,7556e7f.66ba212,59c0f8e.fea45fa,760499a.34a0400,db6d3a1",
-      "description": "Click here to navigate to the Nextthink homepage. This will take you to the main website for Nextthink, a company that specializes in IT management and service offerings.",
+    "ix,0.tg,c3e2d78.it,07a2d57.ac,012a5c2.c671eb8,07a2d57.65f93da,b724c0c.98594f8,b5bea41.3e9cf9b,fcbcf16.1303c06,c3e2d78": {
+      "element_id": "ix,0.tg,c3e2d78.it,07a2d57.ac,012a5c2.c671eb8,07a2d57.65f93da,b724c0c.98594f8,b5bea41.3e9cf9b,fcbcf16.1303c06,c3e2d78",
+      "description": "Click here to access your starred items, which are items you have marked as important for quick reference.",
+      "name": "Starred Items",
+      "counter": 1
+    },
+    "id,eae39ac.ix,0.tg,c3e2d78.it,89dd748.ac,012a5c2.c671eb8,89dd748.3e9cf9b,fcbcf16.1303c06,c3e2d78.ef68f68,f8ae1d1": {
+      "element_id": "id,eae39ac.ix,0.tg,c3e2d78.it,89dd748.ac,012a5c2.c671eb8,89dd748.3e9cf9b,fcbcf16.1303c06,c3e2d78.ef68f68,f8ae1d1",
+      "description": "Click here to navigate to the Apps section, where you can access and manage various applications and tools.",
+      "name": "Access Apps",
+      "counter": 1
+    },
+    "id,3b994b7.ix,0.tg,c96c6d5.ac,9e32046.fd2a57e,140bedb.ae387fb,b4dc66d.93b5b51,b4dc66d.3e5aa9a,fcbcf16.f9a0fe0,5feceb6.1303c06,982d9e3.05b477c,ff77720.3e9cf9b,b5bea41.98594f8,930b695.3f5d581,fcbcf16.0bdc17c,b5bea41.4b168d8,92b4bb2.f5b64df,6aa655d.c9240fa,d5d8be1.65f93da,abde854": {
+      "element_id": "id,3b994b7.ix,0.tg,c96c6d5.ac,9e32046.fd2a57e,140bedb.ae387fb,b4dc66d.93b5b51,b4dc66d.3e5aa9a,fcbcf16.f9a0fe0,5feceb6.1303c06,982d9e3.05b477c,ff77720.3e9cf9b,b5bea41.98594f8,930b695.3f5d581,fcbcf16.0bdc17c,b5bea41.4b168d8,92b4bb2.f5b64df,6aa655d.c9240fa,d5d8be1.65f93da,abde854",
+      "description": "Click here to select the 'Bug' work type from the dropdown menu.",
+      "name": "Select Bug",
+      "counter": 1
+    },
+    "ix,0.tg,cd35a24.it,0072e6b.c671eb8,0072e6b.ef68f68,73abf94": {
+      "element_id": "ix,0.tg,cd35a24.it,0072e6b.c671eb8,0072e6b.ef68f68,73abf94",
+      "description": "Click here to select the 'Design' work type from the dropdown menu.",
+      "name": "Select Design",
+      "counter": 1
+    },
+    "ix,0.tg,ca97811.st,007de7f.it,73c1f1d.ac,3059779.c671eb8,73c1f1d.8128c9a,fcbcf16.fea45fa,8619a37.ef68f68,06871cd": {
+      "element_id": "ix,0.tg,ca97811.st,007de7f.it,73c1f1d.ac,3059779.c671eb8,73c1f1d.8128c9a,fcbcf16.fea45fa,8619a37.ef68f68,06871cd",
+      "description": "Click here to view the presentation for the Semi-Final 1 event.",
+      "name": "Semi-Final 1",
+      "counter": 1
+    },
+    "ix,0.tg,ca97811.st,5558b71.it,39a72f0.ac,3059779.c671eb8,39a72f0.8128c9a,fcbcf16.fea45fa,2a40990.ef68f68,06871cd": {
+      "element_id": "ix,0.tg,ca97811.st,5558b71.it,39a72f0.ac,3059779.c671eb8,39a72f0.8128c9a,fcbcf16.fea45fa,2a40990.ef68f68,06871cd",
+      "description": "Click here to navigate to the Idea Pitch presentation section of the website.",
+      "name": "Idea Pitch",
       "counter": 2
     },
-    "ix,0.tg,c3e2d78.it,4559742.ac,9757ae8.c671eb8,4559742.1303c06,c3e2d78": {
-      "element_id": "ix,0.tg,c3e2d78.it,4559742.ac,9757ae8.c671eb8,4559742.1303c06,c3e2d78",
-      "description": "Click here to \"Ask Rovo\". Doing so will allow you to submit a request or ask a question to the Rovo support team.",
+    "ix,0.tg,ca97811.st,007de7f.it,f0e2508.ac,3059779.c671eb8,f0e2508.8128c9a,fcbcf16.fea45fa,13b98c5.ef68f68,06871cd": {
+      "element_id": "ix,0.tg,ca97811.st,007de7f.it,f0e2508.ac,3059779.c671eb8,f0e2508.8128c9a,fcbcf16.fea45fa,13b98c5.ef68f68,06871cd",
+      "description": "Click here to view the live presentation schedule on the right side of the screen.",
+      "name": "View Live",
       "counter": 1
     },
-    "ix,3.tg,c3e2d78.it,7d9eb7a.ac,8c9bee7.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,1935a78": {
-      "element_id": "ix,3.tg,c3e2d78.it,7d9eb7a.ac,8c9bee7.c671eb8,7d9eb7a.1303c06,c3e2d78.ef68f68,1935a78",
-      "description": "Click here to close the chat window. This action will dismiss the chat window and return the user to the main application interface.",
+    "ix,0.tg,ca97811.st,007de7f.it,05f2e2d.ac,3059779.c671eb8,05f2e2d.8128c9a,fcbcf16.fea45fa,dd61e9d.ef68f68,06871cd": {
+      "element_id": "ix,0.tg,ca97811.st,007de7f.it,05f2e2d.ac,3059779.c671eb8,05f2e2d.8128c9a,fcbcf16.fea45fa,dd61e9d.ef68f68,06871cd",
+      "description": "Click here to review the guidance on what information to include in the one pager template.",
+      "name": "Review Guidance",
+      "counter": 1
+    },
+    "ix,0.tg,ca97811.st,007de7f.it,4795543.ac,3059779.c671eb8,4795543.8128c9a,fcbcf16.fea45fa,4c0e348.ef68f68,06871cd": {
+      "element_id": "ix,0.tg,ca97811.st,007de7f.it,4795543.ac,3059779.c671eb8,4795543.8128c9a,fcbcf16.fea45fa,4c0e348.ef68f68,06871cd",
+      "description": "Click here to see the recordings of the previous team presentations.",
+      "name": "View Recordings",
       "counter": 1
     }
   }
